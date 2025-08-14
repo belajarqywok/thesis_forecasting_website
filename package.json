@@ -1,0 +1,26 @@
+{
+  "name": "thesis_forecasting_website",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "min:css": "esbuild public/css/*.css --minify --outdir=public_dist/css/",
+    "min:download": "esbuild public/js/*.js --minify --outdir=public_dist/js/",
+    "min:js:emiten": "esbuild public/js/emiten/*.js --minify --outdir=public_dist/js/emiten/",
+    "min:js:infographic:globals": "esbuild public/js/infographic/globals/*.js --minify --outdir=public_dist/js/infographic/globals/",
+
+    "min:js:infographic:stock_historical:chart": "esbuild public/js/infographic/stock_historical/chart/*.js --minify --outdir=public_dist/js/infographic/stock_historical/chart/",
+    "min:js:infographic:stock_historical:table": "esbuild public/js/infographic/stock_historical/table/*.js --minify --outdir=public_dist/js/infographic/stock_historical/table/",
+
+    "min:js:infographic:stock_technical:chart":  "esbuild public/js/infographic/stock_technical/chart/*.js --minify --outdir=public_dist/js/infographic/stock_technical/chart/",
+    "min:js:infographic:stock_technical:table":  "esbuild public/js/infographic/stock_technical/table/*.js --minify --outdir=public_dist/js/infographic/stock_technical/table/",
+
+    "min:js:infographic:stock_prediction": "esbuild public/js/infographic/stock_prediction/*.js --minify --outdir=public_dist/js/infographic/stock_prediction/"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "thesis forecasting website",
+  "devDependencies": {
+    "esbuild": "^0.25.8"
+  }
+}

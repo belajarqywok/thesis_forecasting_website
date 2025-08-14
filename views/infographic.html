@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <link rel="icon" href="https://unindra.ac.id/sites/default/files/Logo%20Unindra%20-%20Universitas%20Indraprasta%20-%20100x98.png" type="image/png" />
+  <title>{{ .Fundamentals.Symbol }} | Infografis</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+  <link href="/public/css/infographic.css" rel="stylesheet">
+</head>
+<body>
+  <!-- Header Section with Company Info and Tab Navigation -->
+  <div class="header-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <a href="/" class="back-btn">
+            <i class="fas fa-arrow-left me-2"></i>
+              Kembali
+          </a>
+                    
+          <!-- Company Overview in Header -->
+          <div class="row align-items-center">
+            <div class="col-lg-8">
+              <div class="d-flex align-items-center mb-3">
+                <i class="fas {{ .Fundamentals.FontawesomeIcon }} me-3" style="font-size: 3rem; color: var(--success-color);"></i>
+                <div>
+                  <div class="stock-code">
+                    {{ .Fundamentals.Symbol }}
+                  </div>
+                  <div class="company-name">
+                    {{ .Fundamentals.ShortName }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 text-center">
+              <span class="sector-badge">
+                {{ .Fundamentals.SectorID }}
+              </span>
+            </div>
+          </div>
+                    
+          <!-- Tab Navigation inside Header -->
+          <div class="tab-navigation">
+            <div class="tab-nav-header">
+              <button class="tab-btn active" onclick="switchTab('fundamental')">
+                <i class="fas fa-chart-bar me-2"></i>
+                  Informasi Fundamental
+              </button>
+              <button class="tab-btn" onclick="switchTab('ohlc')">
+                <i class="fas fa-layer-group me-2"></i>
+                Informasi Historikal
+              </button>
+              <button class="tab-btn" onclick="switchTab('technical')">
+                <i class="fas fa-gear me-2"></i>
+                Informasi Teknikal
+              </button>
+              <button class="tab-btn" onclick="switchTab('prediction')">
+                <i class="fas fa-brain me-2"></i>
+                Prediksi Harga Saham
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Area -->
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="content-area loading">
+
+          <!-- Fundamental Data Tab -->
+          <div id="fundamental-tab" class="tab-pane active">
+            <!-- Fundamental Header with Download Button -->
+            <div class="fundamental-header">
+              <h5 class="fundamental-title">
+                <i class="fas fa-chart-bar me-2"></i>
+                Informasi Fundamental {{ .Fundamentals.Symbol }}
+              </h5>
+              <button class="btn btn-download" onclick="downloadReport('fundamental', '{{ .Fundamentals.Symbol }}')">
+              	<i class="fas fa-download me-2"></i>
+                Unduh Laporan
+              </button>
+            </div>
+          	<div class="row">
+              <div class="col-md-6">
+                <div class="fundamental-item">
+                  <div class="fundamental-label">Alamat (<i><b>Address</b></i>)</div>
+                  <div class="fundamental-value">
+                    <a href="https://www.google.com/maps/search/{{ .Fundamentals.ShortName }}; {{ .Fundamentals.Symbol }}; {{ .Fundamentals.Address }}" target="_blank" style="color: white;">
+                      <i class="fas fa-globe"></i> 
+                      {{ .Fundamentals.Address }}
+                    </a>
+                  </div>
+                </div>
+                <div class="fundamental-item">
+                  <div class="fundamental-label">Nomor Telepon (<i><b>Phone Number</b></i>)</div>
+                  <div class="fundamental-value">{{ .Fundamentals.Phone }}</div>
+                </div>
+                <div class="fundamental-item">
+                  <div class="fundamental-label">Situs Web (<i><b>Website</b></i>)</div>
+                  <div class="fundamental-value" >
+                    <a href="{{ .Fundamentals.Website }}" target="_blank" style="color: white;">
+                      <i class="fas fa-link"></i> 
+                      {{ .Fundamentals.Website }}
+                    </a>
+                  </div>
+                </div>
+                <div class="fundamental-item">
+                  <div class="fundamental-label">Kapitalisasi Pasar (<i><b>Market Cap</b></i>)</div>
+                  <div class="fundamental-value">{{ .Fundamentals.MarketCap }}</div>
+                </div>
+                <div class="fundamental-item">
+                  <div class="fundamental-label">Tingkat Dividen (<i><b>Dividend Rate</b></i>)</div>
+                  <div class="fundamental-value">{{ .Fundamentals.DividendRate }}</div>
+                </div>
+                <div class="fundamental-item">
+                  <div class="fundamental-label">Hasil Dividen (<i><b>Dividend Yield</b></i>)</div>
+                  <div class="fundamental-value">{{ .Fundamentals.DividendYield }}</div>
+                </div>
+                <div class="fundamental-item">
+                  <div class="fundamental-label">Pertumbuhan Laba (<i><b>Earnings Growth</b></i>)</div>
+                  <div class="fundamental-value">{{ .Fundamentals.EarningsGrowth }}</div>
+                </div>
+                <div class="fundamental-item">
+                  <div class="fundamental-label">Margin Laba (<i><b>Profit Margins</b></i>)</div>
+                  <div class="fundamental-value">{{ .Fundamentals.ProfitMargins }}</div>
+                </div>
+                <div class="fundamental-item">
+                  <div class="fundamental-label">Margin Kotor (<i><b>Gross Margins</b></i>)</div>
+                  <div class="fundamental-value">{{ .Fundamentals.GrossMargins }}</div>
+                </div>
+                <div class="fundamental-item">
+                  <div class="fundamental-label">Beta</div>
+                  <div class="fundamental-value">{{ .Fundamentals.Beta }}</div>
+                </div>
+                <div class="fundamental-item">
+                  <div class="fundamental-label">Nilai Buku (<i><b>Book Value</b></i>)</div>
+                  <div class="fundamental-value">{{ .Fundamentals.BookValue }}</div>
+                </div>
+                <div class="fundamental-item">
+                  <div class="fundamental-label">Rasio Harga terhadap Nilai Buku (<i><b>Price To Book</b></i>)</div>
+                  <div class="fundamental-value">{{ .Fundamentals.PriceToBook }}</div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="fundamental-item">
+                  <div class="fundamental-label">Rasio Cepat (<i><b>Quick Ratio</b></i>)</div>
+                  <div class="fundamental-value">{{ .Fundamentals.QuickRatio }}</div>
+                </div>
+                <div class="fundamental-item">
+                  <div class="fundamental-label">Rasio Saat Ini (<i><b>Current Ratio</b></i>)</div>
+                  <div class="fundamental-value">{{ .Fundamentals.CurrentRatio }}</div>
+                </div>
+                <div class="fundamental-item">
+                  <div class="fundamental-label">Rasio Utang terhadap Ekuitas (<i><b>Debt To Equity</b></i>)</div>
+                  <div class="fundamental-value">{{ .Fundamentals.DebtToEquity }}</div>
+                </div>
+                <div class="fundamental-item">
+                  <div class="fundamental-label">Pendapatan per Saham (<i><b>Revenue Per Share</b></i>)</div>
+                  <div class="fundamental-value">{{ .Fundamentals.RevenuePerShare }}</div>
+                </div>
+                <div class="fundamental-item">
+                  <div class="fundamental-label">Pertumbuhan Pendapatan (<i><b>Revenue Growth</b></i>)</div>
+                  <div class="fundamental-value">{{ .Fundamentals.RevenueGrowth }}</div>
+                </div>
+                <div class="fundamental-item">
+                  <div class="fundamental-label">Ebitda</div>
+                  <div class="fundamental-value">{{ .Fundamentals.Ebitda }}</div>
+                </div>
+                <div class="fundamental-item">
+                  <div class="fundamental-label">Perubahan Harga di Pasar Reguler (<i><b>Regular Market Change</b></i>)</div>
+                  <div class="fundamental-value">{{ .Fundamentals.RegularMarketChange }}</div>
+                </div>
+                <div class="fundamental-item">
+                  <div class="fundamental-label">Rasio Pembayaran Dividen (<i><b>Payout Ratio</b></i>)</div>
+                  <div class="fundamental-value">{{ .Fundamentals.PayoutRatio }}</div>
+                </div>
+                <div class="fundamental-item">
+                  <div class="fundamental-label">Rasio P/E Historis (<i><b>Trailing P/E</b></i>)</div>
+                  <div class="fundamental-value">{{ .Fundamentals.TrailingPE }}</div>
+                </div>
+                <div class="fundamental-item">
+                  <div class="fundamental-label">Rasio P/E Proyeksi (<i><b>Forward P/E</b></i>)</div>
+                  <div class="fundamental-value">{{ .Fundamentals.ForwardPE }}</div>
+                </div>
+                <div class="fundamental-item">
+                  <div class="fundamental-label">EPS Historis (<i><b>Trailing EPS</b></i>)</div>
+                  <div class="fundamental-value">{{ .Fundamentals.TrailingEps }}</div>
+                </div>
+                <div class="fundamental-item">
+                  <div class="fundamental-label">EPS Proyeksi (<i><b>Forward EPS</b></i>)</div>
+                  <div class="fundamental-value">{{ .Fundamentals.ForwardEps }}</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <!-- Fundamental Data Tab -->
+
+          <!-- OHLC Data Tab -->
+          <div id="ohlc-tab" class="tab-pane">
+            <!-- Chart Controls -->
+            <div class="chart-controls">
+              <h6><i class="fas fa-sliders-h me-2"></i>Pilih Data untuk Ditampilkan</h6>
+              <div class="control-group">
+                <div class="chart-checkbox" onclick="toggleDataset('open')">
+                  <input type="checkbox" id="open-check" checked>
+                  <label for="open-check">Open</label>
+                </div>
+                <div class="chart-checkbox" onclick="toggleDataset('high')">
+                  <input type="checkbox" id="high-check" checked>
+                  <label for="high-check">High</label>
+                </div>
+                <div class="chart-checkbox" onclick="toggleDataset('low')">
+                  <input type="checkbox" id="low-check" checked>
+                  <label for="low-check">Low</label>
+                </div>
+                <div class="chart-checkbox" onclick="toggleDataset('close')">
+                  <input type="checkbox" id="close-check" checked>
+                  <label for="close-check">Close</label>
+                </div>
+                <div class="chart-checkbox" onclick="toggleDataset('volume')">
+                  <input type="checkbox" id="volume-check">
+                  <label for="volume-check">Volume</label>
+                </div>
+              </div>
+              <div class="preset-buttons">
+                <button class="preset-btn" onclick="setPreset('ohlc')">OHLC</button>
+                <button class="preset-btn" onclick="setPreset('all')">Semua Data</button>
+              </div>
+            </div>
+
+            <!-- Interactive Chart -->
+            <div class="chart-container">
+              <canvas id="ohlcChart"></canvas>
+            </div>
+                    
+            <div class="ohlc-header">
+              <h5 class="ohlc-title">Data Historikal</h5>
+              <button class="btn btn-download" onclick="downloadReport('historicals', '{{ .Fundamentals.Symbol }}')">
+                <i class="fas fa-download me-2"></i>
+                Unduh Laporan
+              </button>
+            </div>
+                    
+            <div class="table-responsive">
+              <table class="table table-hover mb-0" id="ohlcTable">
+                <thead>
+                  <tr>
+                    <th>Tanggal</th>
+                  	<th>Open</th>
+                    <th>High</th>
+                    <th>Low</th>
+                    <th>Close</th>
+                    <th>Volume</th>
+                  </tr>
+              	</thead>
+                <tbody id="tableBody">
+                  <!-- Table rows will be populated by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Pagination Container -->
+            <div class="pagination-container">
+              <div class="pagination-info">
+                Menampilkan <span class="highlight" id="startEntry">1</span> - <span class="highlight" id="endEntry">10</span> dari <span class="highlight" id="totalEntries">50</span> data
+              </div>    
+
+              <div class="pagination-controls">
+                <button class="pagination-btn nav-btn" id="prevBtn" onclick="changePage(-1)">
+                    <i class="fas fa-chevron-left"></i> Prev
+                </button>
+                <div id="pageNumbers">
+									<!-- Page numbers will be populated by JavaScript -->
+                </div>
+                <button class="pagination-btn nav-btn" id="nextBtn" onclick="changePage(1)">
+                  Next <i class="fas fa-chevron-right"></i>
+                </button>
+              </div>
+
+              <div class="rows-per-page">
+                <span>Baris per halaman:</span>
+                <select id="rowsPerPage" onchange="changeRowsPerPage()">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="15">15</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                </select>
+              </div>
+            </div>
+          </div>
+					<!-- OHLC Data Tab -->
+
+          <!-- Technical Analysis Tab -->
+          <div id="technical-tab" class="tab-pane">
+            <!-- Chart Controls -->
+            <div class="chart-controls">
+              <h6><i class="fas fa-sliders-h me-2"></i>Pilih Indikator untuk Ditampilkan</h6>
+              <div class="control-group">
+                <div class="chart-checkbox" onclick="toggleTechnicalDataset('mfi')">
+                  <input type="checkbox" id="mfi-check" checked>
+                  <label for="mfi-check">MFI</label>
+                </div>
+                <div class="chart-checkbox" onclick="toggleTechnicalDataset('rsi')">
+                  <input type="checkbox" id="rsi-check" checked>
+                  <label for="rsi-check">RSI</label>
+                </div>
+                <div class="chart-checkbox" onclick="toggleTechnicalDataset('macd')">
+                  <input type="checkbox" id="macd-check" checked>
+                  <label for="macd-check">MACD</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Interactive Chart -->
+            <div class="chart-container">
+              <canvas id="technicalChart"></canvas>
+            </div>
+                    
+            <div class="ohlc-header">
+              <h5 class="ohlc-title">Data Teknikal</h5>
+              <button class="btn btn-download" onclick="downloadReport('technicals', '{{ .Fundamentals.Symbol }}')">
+                <i class="fas fa-download me-2"></i>
+                Unduh Laporan
+              </button>
+            </div>
+            
+						<!-- table responsive -->
+            <div class="table-responsive">
+              <table class="table table-hover mb-0" id="technicalTable">
+                <thead>
+                  <tr>
+                    <th>Tanggal</th>
+                    <th>MFI</th>
+                    <th>RSI</th>
+                    <th>MACD</th>
+                  </tr>
+                </thead>
+                <tbody id="technicalTableBody">
+                  <!-- table rows will be populated by javascript -->
+                </tbody>
+              </table>
+            </div>
+					
+            <!-- pagination container -->
+            <div class="pagination-container">
+              <div class="pagination-info">
+                Menampilkan <span class="highlight" id="technicalStartEntry">1</span> - <span class="highlight" id="technicalEndEntry">10</span> dari <span class="highlight" id="technicalTotalEntries">50</span> data
+              </div>
+                        
+              <div class="pagination-controls">
+                <button class="pagination-btn nav-btn" id="technicalPrevBtn" onclick="changeTechnicalPage(-1)">
+                  <i class="fas fa-chevron-left"></i> Prev
+                </button>
+                <div id="technicalPageNumbers">
+                  <!-- Page numbers will be populated by JavaScript -->
+                </div>
+                <button class="pagination-btn nav-btn" id="technicalNextBtn" onclick="changeTechnicalPage(1)">
+                  Next <i class="fas fa-chevron-right"></i>
+                </button>
+              </div>
+
+              <div class="rows-per-page">
+                <span>Baris per halaman:</span>
+                <select id="technicalRowsPerPage" onchange="changeTechnicalRowsPerPage()">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="15">15</option>
+                  <option value="25">25</option>
+                  <option value="50">50</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Prediction Tab -->
+          <div id="prediction-tab" class="tab-pane">
+            <!-- Prediction Controls -->
+            <div class="prediction-controls">
+              <h6><i class="fas fa-brain me-2"></i>Prediksi Harga Saham BBRI</h6>
+              <div class="prediction-input-group">
+                <div class="prediction-input">
+                  <label for="predictionDays">Hari Prediksi:</label>
+                  <input type="number" id="predictionDays" min="1" max="30" value="7" onchange="predict()">
+                </div>
+                <button class="predict-btn" id="predictBtn" onclick="predict()">
+                  <i class="fas fa-magic me-2"></i>
+                  Prediksi
+                </button>
+              </div>
+              <div class="loading-spinner" id="loadingSpinner">
+                <div class="spinner"></div>
+                <span>Memproses prediksi...</span>
+              </div>
+            </div>
+
+            <!-- Prediction Chart -->
+            <div class="chart-container">
+              <canvas id="predictionChart"></canvas>
+            </div>
+          </div>
+          <!-- Prediction Tab -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+  <script>
+    // Extended OHLC Data
+    const allOHLCData = {{ .Historicals | toJSON }}
+
+    // Extended Technical Data
+    const allTechnicalData = {{ .Technicals | toJSON }}
+
+    // Chart Data for Chart.js
+    
+    const ohlcData = {
+        labels: allOHLCData
+          .slice(-90)              
+          .map(item => item.date),
+        datasets: {
+            open: {
+                label: 'Open',
+                data: allOHLCData
+                  .slice(-90)              
+                  .map(item => item.open),
+                borderColor: '#667eea',
+                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                tension: 0.4,
+                yAxisID: 'y'
+            },
+            high: {
+                label: 'High',
+                data: allOHLCData
+                  .slice(-90)              
+                  .map(item => item.high),
+                borderColor: '#00d4aa',
+                backgroundColor: 'rgba(0, 212, 170, 0.1)',
+                tension: 0.4,
+                yAxisID: 'y'
+            },
+            low: {
+                label: 'Low',
+                data: allOHLCData
+                  .slice(-90)              
+                  .map(item => item.low),
+                borderColor: '#ff6b6b',
+                backgroundColor: 'rgba(255, 107, 107, 0.1)',
+                tension: 0.4,
+                yAxisID: 'y'
+            },
+            close: {
+                label: 'Close',
+                data: allOHLCData
+                  .slice(-90)              
+                  .map(item => item.close),
+                borderColor: '#ffd93d',
+                backgroundColor: 'rgba(255, 217, 61, 0.1)',
+                tension: 0.4,
+                borderWidth: 3,
+                yAxisID: 'y'
+            },
+            volume: {
+                label: 'Volume (M)',
+                data: allOHLCData
+                  .slice(-90)              
+                  .map(item => item.volume),
+                borderColor: '#764ba2',
+                backgroundColor: 'rgba(118, 75, 162, 0.2)',
+                tension: 0.4,
+                yAxisID: 'y1',
+                type: 'bar'
+            }
+        }
+    }
+
+    // Technical Data for Chart.js
+    const technicalData = {
+        labels: allTechnicalData
+          .slice(-90)              
+          .map(item => item.date),
+        datasets: {
+            mfi: {
+                label: 'MFI',
+                data: allTechnicalData
+                  .slice(-90)              
+                  .map(item => item.MFI),
+                borderColor: '#667eea',
+                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                tension: 0.4,
+                yAxisID: 'y'
+            },
+            rsi: {
+                label: 'RSI',
+                data: allTechnicalData
+                  .slice(-90)              
+                  .map(item => item.RSI),
+                borderColor: '#00d4aa',
+                backgroundColor: 'rgba(0, 212, 170, 0.1)',
+                tension: 0.4,
+                yAxisID: 'y'
+            },
+            macd: {
+                label: 'MACD',
+                data: allTechnicalData
+                  .slice(-90)              
+                  .map(item => item.MACD),
+                borderColor: '#ffd93d',
+                backgroundColor: 'rgba(255, 217, 61, 0.1)',
+                tension: 0.4,
+                borderWidth: 3,
+                yAxisID: 'y1'
+            }
+        }
+    }
+
+    // Pagination Variables
+    const allOHLCData1 = [...allOHLCData].reverse();
+    let currentPage = 1
+    let rowsPerPage = 10
+    let totalRows = allOHLCData1.length
+    let chart
+    let predictionChart
+
+    // technical analysis pagination variables
+    const allTechnicalDataReverse = [...allTechnicalData].reverse();
+    let technicalCurrentPage = 1
+    let technicalRowsPerPage = 10
+    let technicalTotalRows = allTechnicalDataReverse.length
+    let technicalChart
+    
+    let prediction_click = 0
+		let stock_name = '{{ .Fundamentals.Symbol }}'
+        
+  </script>
+  <!-- stock historical -->
+  <script src="/public/js/infographic/stock_historical/table/table_historical.js" defer></script>
+  <script src="/public/js/infographic/stock_historical/table/pagination_historical.js" defer></script>
+
+  <script src="/public/js/infographic/stock_historical/chart/init_chart_historical.js" defer></script>
+  <script src="/public/js/infographic/stock_historical/chart/toggle_dataset_historical.js" defer></script>
+  <script src="/public/js/infographic/stock_historical/chart/update_chart_historical.js" defer></script>
+  <script src="/public/js/infographic/stock_historical/chart/set_preset_historical.js" defer></script>
+
+  <!-- stock technical -->
+  <script src="/public/js/infographic/stock_technical/table/table_technical.js" defer></script>
+  <script src="/public/js/infographic/stock_technical/table/pagination_technical.js" defer></script>
+
+  <script src="/public/js/infographic/stock_technical/chart/init_chart_technical.js" defer></script>
+  <script src="/public/js/infographic/stock_technical/chart/toggle_dataset_technical.js" defer></script>
+  <script src="/public/js/infographic/stock_technical/chart/update_chart_technical.js" defer></script>
+  <script src="/public/js/infographic/stock_technical/chart/set_preset_technical.js" defer></script>
+
+  <!-- stock prediction -->
+  <script src="/public/js/infographic/stock_prediction/inference.js" defer></script>
+  <script src="/public/js/infographic/stock_prediction/update_pred_chart.js" defer></script>
+
+  <!-- globals -->
+  <script src="/public/js/download.js" defer></script>
+  <script src="/public/js/infographic/globals/switch_tab.js" defer></script>
+  <script src="/public/js/infographic/globals/dom_content_loaded.js" defer></script>
+</body>
+</html>

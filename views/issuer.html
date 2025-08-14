@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="https://unindra.ac.id/sites/default/files/Logo%20Unindra%20-%20Universitas%20Indraprasta%20-%20100x98.png" type="image/png" />
+  <title>Prediksi Saham Indonesia | Dashboard Analisis Saham</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/public/css/emiten.css">
+</head>
+<body>
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="container">
+    	<div class="row">
+        <div class="col-12 text-center">
+          <h1 class="header-title">Aplikasi Prediksi Saham</h1>
+          <p class="header-subtitle">
+            Prediksi Harga Saham di Indonesia Menggunakan Metode <br> Bidirectional Gated Recurrent Unit (BiGRU)
+            dengan Pendekatan Distributed Machine Learning <br> Operations
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search and Filter Section -->
+  <div class="container">
+    <div class="search-section loading">
+      <h3 class="search-title">
+        <i class="fas fa-search me-2"></i>
+        Filter dan Laporan Emiten
+      </h3>
+      <div class="search-controls">
+        <input type="text" class="search-input" id="searchInput" placeholder="Cari berdasarkan kode saham atau emiten...">
+        <select class="filter-select" id="sectorFilter">
+          <option value="">Semua Sektor</option>
+          {{range .Sectors}}
+            <option value="{{.}}">{{.}}</option>
+          {{end}}
+        </select>
+        <button class="btn-download" onclick="downloadReport()">
+          <i class="fas fa-download"></i>
+          Laporan Emiten
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stock Cards Section -->
+  <div class="container">
+    <div class="stock-grid" id="stockGrid">
+
+      {{range .Infographics}}
+      <!-- Card -->
+      <div class="stock-card loading" data-sector="{{.SectorID}}" data-performance="positive">
+        <div class="sector-badge">{{.SectorID}}</div>
+        <div class="stock-header">
+          <div class="stock-icon">
+            <i class="fas {{.FontawesomeIcon}}"></i>
+          </div>
+          <div class="stock-info">
+            <h3>{{.Symbol}}</h3>
+            <p>{{.ShortName}}</p>
+          </div>
+        </div>
+        <div class="stock-details">
+          <div class="detail-item">
+            <div class="detail-label">Beta</div>
+            <div class="detail-value">{{.Beta}}</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-label">Hasil Dividen</div>
+            <div class="detail-value">{{.DividendYield}}</div>
+          </div>
+        </div>
+        <div class="stock-actions">
+          <a href="/infographic/?issuer_name={{.Symbol}}" class="btn-analyze">
+          	<i class="fas fa-chart-bar"></i>
+            Infografis
+          </a>
+        </div>
+      </div>
+      {{end}}
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
+	<script src="/public/js/emiten/emiten.js" defer></script>
+  <script src="/public/js/download.js" defer></script>
+</body>
+</html>
