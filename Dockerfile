@@ -27,7 +27,7 @@ RUN go build -o main . \
 
 RUN wget https://github.com/microsoft/onnxruntime/releases/download/v1.21.0/onnxruntime-linux-x64-1.21.0.tgz && \
     tar -xvzf onnxruntime-linux-x64-1.21.0.tgz && \
-    rm -rf onnxruntime-linux-x64-1.21.0.tgz && \
+    rm -rf onnxruntime-linux-x64-1.21.0.tgz
 
 RUN git lfs install && \
     git clone https://huggingface.co/datasets/qywok/indonesia_stocks && \
