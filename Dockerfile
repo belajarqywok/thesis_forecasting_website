@@ -9,9 +9,9 @@ ENV APP_DIR=/thesis_forecasting_website \
 
 WORKDIR ${APP_DIR}
 
-RUN apk add --no-cache git git-lfs curl tzdata \
+RUN apk add --no-cache git git-lfs curl \
     && git lfs install
-ENV TZ=Asia/Jakarta
+# ENV TZ=Asia/Jakarta
 
 COPY go.mod go.sum ./
 RUN go mod download
