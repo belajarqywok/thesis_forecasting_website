@@ -100,16 +100,21 @@ func StockPredictionHandler(c *fiber.Ctx) error {
 	featureSize    := int64(5)
 	lastData       := data[len(data) - int(sequenceLength):]
 
-	inputData  := make([]float32, sequenceLength * featureSize)
-	for i, row := range lastData {
-		for j := 1; j <= int(featureSize); j++ {
-			val, ok := row[j].(float32)
-			if !ok {
-				log.Fatalf("Expected float32 at row %d col %d, got %T", i, j, row[j])
-			}
+	// inputData  := make([]float32, sequenceLength * featureSize)
+	// for i, row := range lastData {
+	// 	for j := 1; j <= int(featureSize); j++ {
+	// 		val, ok := row[j].(float32)
+	// 		if !ok {
+	// 			log.Fatalf("Expected float32 at row %d col %d, got %T", i, j, row[j])
+	// 		}
 
-			inputData[i*int(featureSize) + (j-1)] = val
-		}
+	// 		inputData[i*int(featureSize) + (j-1)] = val
+	// 	}
+	// }
+
+	inputData := make([]float32, sequenceLength*featureSize)
+	for i, row := range lastData {
+		copy(inputData[i*int(featureSize) : (i+1)*int(featureSize)], row[1:])
 	}
 
 	inputShape := onnxruntime.NewShape(1, sequenceLength, featureSize)
