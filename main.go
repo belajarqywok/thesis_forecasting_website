@@ -37,7 +37,7 @@ func main() {
 
   forecasting_service.Get("/", handlers.IssuerHandler)
   forecasting_service.Get("/infographic", handlers.InfographicHandler)
-  // forecasting_service.Post("/prediction", inferences.StockPredictionHandler)
+  forecasting_service.Post("/prediction", inferences.StockPredictionHandler)
 
   host := os.Getenv("FORECASTING_SERVICE_HOST")
 	port := os.Getenv("FORECASTING_SERVICE_PORT")
