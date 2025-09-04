@@ -8,7 +8,7 @@ ENV APP_DIR=/thesis_forecasting_website \
 
 WORKDIR ${APP_DIR}
 
-RUN apt install -y git git-lfs curl gcc g++ \
+RUN apt update && apt install -y git git-lfs curl gcc g++ \
     libc-dev make tzdata && git lfs install
 
 ENV TZ=Asia/Jakarta
