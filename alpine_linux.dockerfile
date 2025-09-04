@@ -1,4 +1,4 @@
-FROM golang:1.21.13-bullseye
+FROM golang:1.21.13-alpine3.20 
 
 LABEL creator="al-fariqy raihan"
 
@@ -8,15 +8,15 @@ ENV APP_DIR=/thesis_forecasting_website \
 
 WORKDIR ${APP_DIR}
 
-RUN apt install -y git git-lfs curl gcc g++ \
-    libc-dev make tzdata && git lfs install
+RUN apk add --no-cache git git-lfs curl gcc g++ \
+    libc-dev make gcompat libstdc++ && git lfs install
 
+RUN apk add --no-cache tzdata
 ENV TZ=Asia/Jakarta
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
-    && echo $TZ > /etc/timezone
 
 COPY go.mod go.sum ./
-RUN  go mod download
+RUN go mod download
+
 COPY . .
 
 # NOTES:
@@ -41,6 +41,7 @@ RUN mkdir -p models && \
     done
 
 RUN chmod -R 755 ${APP_DIR}
+
 EXPOSE 7860
 
 CMD ["./main"]
