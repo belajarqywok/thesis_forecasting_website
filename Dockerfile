@@ -4,11 +4,11 @@ LABEL creator="al-fariqy raihan"
 
 ENV APP_DIR=/thesis_forecasting_website \
     GO111MODULE=on \
-    CGO_ENABLED=0 
+    CGO_ENABLED=1
 
 WORKDIR ${APP_DIR}
 
-RUN apk add --no-cache git git-lfs curl \
+RUN apk add --no-cache git git-lfs curl gcc g++ libc-dev make \
     && git lfs install
 
 RUN apk add --no-cache tzdata
