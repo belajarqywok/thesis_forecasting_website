@@ -1,9 +1,19 @@
 const updatePredictionChart = (response) => {
-  const actualDates  = response.actuals.map(entry => entry.date)
-  const actualPrices = response.actuals.map(entry => entry.price)
+  // const actualDates  = response.actuals.map(entry => entry.date)
+  // const actualPrices = response.actuals.map(entry => entry.price)
 
-  const predictionDates  = response.predictions.map(entry => entry.date)
-  const predictionPrices = response.predictions.map(entry => entry.price)
+  const actualDates  = response.data.predictions
+    .actuals.map(entry => entry.date)
+  const actualPrices = response.data.predictions
+    .actuals.map(entry => entry.price)
+
+  // const predictionDates  = response.predictions.map(entry => entry.date)
+  // const predictionPrices = response.predictions.map(entry => entry.price)
+
+  const predictionDates  = response.data.predictions
+    .predictions.map(entry => entry.date)
+  const predictionPrices = response.data.predictions
+    .predictions.map(entry => entry.price)
 
   const labels         = [...actualDates, ...predictionDates]
   const actualData     = [...actualPrices, ...Array(predictionPrices.length).fill(null)]
