@@ -4,6 +4,10 @@ import (
   "fmt"
   "log"
 
+  // //for pprof profiling
+  // "net/http"
+  // _ "net/http/pprof"
+
   "os"
 	"os/signal"
 	"syscall"
@@ -15,7 +19,6 @@ import (
 
   helpers      "thesis_forecasting_website/helpers"
   handlers     "thesis_forecasting_website/handlers"
-  inferences   "thesis_forecasting_website/inferences"
   middlewares  "thesis_forecasting_website/middlewares"
 )
 
@@ -37,7 +40,7 @@ func main() {
 
   forecasting_service.Get("/", handlers.IssuerHandler)
   forecasting_service.Get("/infographic", handlers.InfographicHandler)
-  forecasting_service.Post("/prediction", inferences.StockPredictionHandler)
+  forecasting_service.Post("/prediction", handlers.InferenceHandler)
 
   host := os.Getenv("FORECASTING_SERVICE_HOST")
 	port := os.Getenv("FORECASTING_SERVICE_PORT")
@@ -48,6 +51,14 @@ func main() {
 			log.Fatalf("server error: %v", err)
 		}
 	}()
+
+  // // pprof profiling
+  // go func() {
+  //   log.Println("pprof listening on :6060")
+  //   if err := http.ListenAndServe("0.0.0.0:6060", nil); err != nil {
+  //     log.Fatalf("pprof server error: %v", err)
+  //   }
+  // }()
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)

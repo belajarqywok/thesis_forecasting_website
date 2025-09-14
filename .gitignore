@@ -1,6 +1,7 @@
 /node_modules
 /indonesia_stocks
+
 /onnxruntime
 /onnxruntime-linux-x64-1.21.0
+
 /models
-getmodels.sh

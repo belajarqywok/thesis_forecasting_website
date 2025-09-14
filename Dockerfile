@@ -1,6 +1,7 @@
 FROM golang:1.21.13-bullseye
 
 LABEL creator="al-fariqy raihan"
+LABEL npm="202143501514"
 
 ENV APP_DIR=/thesis_forecasting_website \
     GO111MODULE=on \

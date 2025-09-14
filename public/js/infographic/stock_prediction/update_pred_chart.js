@@ -1,9 +1,9 @@
-const updatePredictionChart = (data) => {
-  const actualDates  = data.data.predictions.actuals.map(entry => entry.date)
-  const actualPrices = data.data.predictions.actuals.map(entry => entry.price)
+const updatePredictionChart = (response) => {
+  const actualDates  = response.actuals.map(entry => entry.date)
+  const actualPrices = response.actuals.map(entry => entry.price)
 
-  const predictionDates  = data.data.predictions.predictions.map(entry => entry.date)
-  const predictionPrices = data.data.predictions.predictions.map(entry => entry.price)
+  const predictionDates  = response.predictions.map(entry => entry.date)
+  const predictionPrices = response.predictions.map(entry => entry.price)
 
   const labels         = [...actualDates, ...predictionDates]
   const actualData     = [...actualPrices, ...Array(predictionPrices.length).fill(null)]
@@ -23,7 +23,7 @@ const updatePredictionChart = (data) => {
         labels: labels,
         datasets: [
           {
-            label: 'Data Historis',
+            label: 'Data Historiskal',
             data: actualData,
             borderColor: 'rgba(75, 192, 192, 1)',
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
@@ -52,7 +52,7 @@ const updatePredictionChart = (data) => {
       let options_plugins_chart = {
         title: {
           display: true,
-          text: 'BBRI - Prediksi Harga Saham',
+          text: `${stock_name} - Prediksi Harga Saham`,
           color: '#ffffff',
           font: {
             size: 16,

@@ -9,11 +9,9 @@ import (
   loaders   "thesis_forecasting_website/loaders"
 )
 
-func InfographicHandler(c *fiber.Ctx) error {
-	issuer_name := c.Query("issuer_name")
-  if issuer_name == "" {
-    return c.Redirect("/")
-  }
+func InfographicHandler(context *fiber.Ctx) error {
+	issuer_name := context.Query("issuer_name")
+  if issuer_name == "" { return context.Redirect("/") }
 
   // json validation
   fundamental_json := fmt.Sprintf("./indonesia_stocks/fundamentals/%s.json", issuer_name)
@@ -40,9 +38,7 @@ func InfographicHandler(c *fiber.Ctx) error {
   waitgroup_validate.Wait()
 
   for i := 0; i < len(json_paths); i++ {
-    if err := <-err_channel; err != nil {
-      return c.Redirect("/")
-    }
+    if err := <-err_channel; err != nil { return context.Redirect("/") }
   }
 
   // load infographics (fundamental, historical, indicator)
@@ -99,7 +95,7 @@ func InfographicHandler(c *fiber.Ctx) error {
 
   if len(errors) > 0 {
     for _, err := range errors { println(err.Error()) }
-    return c.Redirect("/")
+    return context.Redirect("/")
   }
 
   data := fiber.Map{
@@ -108,5 +104,5 @@ func InfographicHandler(c *fiber.Ctx) error {
     "Technicals":   indicators,
   }
 
-  return c.Render("infographic", data)
+  return context.Render("infographic", data)
 }

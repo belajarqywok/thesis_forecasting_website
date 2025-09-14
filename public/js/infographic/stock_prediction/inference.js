@@ -5,7 +5,8 @@ const predict = async () => {
   loadingSpinner.classList.remove('d-none')
   loadingSpinner.classList.add('show')
   
-  const apiUrl = 'https://qywok-cryptocurrency-prediction.hf.space/crypto/prediction'
+  // const apiUrl = 'https://qywok-cryptocurrency-prediction.hf.space/crypto/prediction'
+  const apiUrl = '/prediction'
   
   try {
     const response = await fetch(apiUrl, {
@@ -16,7 +17,7 @@ const predict = async () => {
       },
       body: JSON.stringify({
         days: parseInt(days),
-        currency: "BBRI"
+        issuer: `${stock_name}`
       })
     })
       
